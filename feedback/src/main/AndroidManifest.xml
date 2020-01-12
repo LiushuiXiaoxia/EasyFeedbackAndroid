@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="cn.mycommons.easyfeedback">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="MediaStore.Images.Media.INTERNAL_CONTENT_URI" />
+    <uses-permission android:name="MediaStore.Images.Media.EXTERNAL_CONTENT_URI" />
+
+    <application>
+
+        <meta-data
+            android:name="QINIU_AK"
+            android:value="${QINIU_AK}" />
+
+        <meta-data
+            android:name="QINIU_SK"
+            android:value="${QINIU_SK}" />
+
+        <activity
+            android:name=".ui.EditImageActivity"
+            android:label="@string/fb_act_edit"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.SubmitActivity"
+            android:label="@string/fb_act_submit"
+            android:screenOrientation="portrait" />
+
+        <provider
+            android:name=".internal.FbAutoInitCp"
+            android:authorities="${applicationId}.FeedbackCp" />
+    </application>
+
+</manifest>

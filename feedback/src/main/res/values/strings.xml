@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">lib</string>
+
+    <string name="fb_act_edit">标记</string>
+    <string name="fb_act_submit">提交反馈</string>
+
+    <string name="fb_dialog_title">遇到问题了么?</string>
+    <string name="fb_dialog_msg">想要反馈问题么？您的反馈会帮助我们把产品做的更好~</string>
+    <string name="fb_dialog_ok">快速反馈</string>
+    <string name="fb_dialog_cancel">取消</string>
+</resources>

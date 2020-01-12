@@ -1,0 +1,4 @@
+include ':feedback-timber'
+include ':feedback'
+include ':app'
+rootProject.name = 'EasyFeedbackAndroid'
