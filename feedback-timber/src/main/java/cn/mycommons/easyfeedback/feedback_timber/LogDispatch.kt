@@ -24,7 +24,7 @@ class LogDispatch {
             parent.mkdir()
         }
         val format = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
-        File(parent, "${format.format(Date())}.timber.log.txt")
+        File(parent, "${format.format(Date())}_timber.log.txt")
     }
 
     private val logWriter: PrintWriter by lazy {
