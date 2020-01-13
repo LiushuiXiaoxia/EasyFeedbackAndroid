@@ -13,5 +13,7 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+    - name: create local.properties
+      run: echo QINIU_AK=aa >> local.properties && echo QINIU_SK=bb >> local.properties
     - name: Build with Gradle
-      run: ./gradlew build
+      run: echo aa=bb > local.properties &&  ./gradlew assemble --stacktrace

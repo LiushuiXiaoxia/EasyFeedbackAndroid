@@ -19,8 +19,8 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         manifestPlaceholders = [
-                QINIU_AK: properties.getProperty("QINIU_AK"),
-                QINIU_SK: properties.getProperty("QINIU_SK")
+                QINIU_AK: properties.getProperty("QINIU_AK", "aa"),
+                QINIU_SK: properties.getProperty("QINIU_SK", "bb")
         ]
     }
 
