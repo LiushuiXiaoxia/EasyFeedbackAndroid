@@ -36,11 +36,11 @@ class LogDispatch {
     private var queue: Queue<LogMsg> = LinkedBlockingDeque()
     private var format = SimpleDateFormat("HH:mm:ss.sss", Locale.getDefault())
     private val logLevel: Map<Int, String> = mapOf(
-            Log.VERBOSE to "V",
-            Log.DEBUG to "D",
-            Log.INFO to "I",
-            Log.WARN to "W",
-            Log.ERROR to "E"
+            Log.VERBOSE to "VERBOSE",
+            Log.DEBUG to "DEBUG",
+            Log.INFO to "INFO",
+            Log.WARN to "WARN",
+            Log.ERROR to "ERROR"
     )
 
     init {
