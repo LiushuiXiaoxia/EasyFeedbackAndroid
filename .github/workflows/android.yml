@@ -8,12 +8,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
-    - name: set up JDK 1.8
-      uses: actions/setup-java@v1
-      with:
-        java-version: 1.8
-    - name: create local.properties
-      run: echo QINIU_AK=aa >> local.properties && echo QINIU_SK=bb >> local.properties
-    - name: Build with Gradle
-      run: echo aa=bb > local.properties &&  ./gradlew assemble --stacktrace
+      - uses: actions/checkout@v1
+      - name: set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: create local.properties
+        run: echo QINIU_AK=qiniu_ak >> local.properties && echo QINIU_SK=qiniu_sk >> local.properties
+      - name: Build with Gradle
+        run: ./gradlew assemble --stacktrace -PGITHUB_CI=true
