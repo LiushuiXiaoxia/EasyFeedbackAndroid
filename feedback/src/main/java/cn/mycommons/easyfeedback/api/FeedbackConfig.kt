@@ -13,7 +13,12 @@ class FeedbackConfig {
     var debug: Boolean = false
 
     /**
-     * 是否自动关闭，在Activity的onStart、onStop方法自动开启和关闭，默认为true
+     * 是否开启摇一摇反馈问题，在Activity的onStart、onStop方法自动开启和关闭，默认为 false
      */
-    var autoClose: Boolean = true
+    var shakeFeedback: Boolean = false
+
+    /**
+     * 上传服务器
+     */
+    var uploadServer: String = ""
 }

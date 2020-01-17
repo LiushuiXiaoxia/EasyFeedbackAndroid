@@ -1,15 +1,13 @@
 package cn.mycommons.easyfeedback.internal
 
 import android.content.Context
+import cn.mycommons.easyfeedback.api.*
 import cn.mycommons.easyfeedback.api.FbConst.LOG_POSTFIX
-import cn.mycommons.easyfeedback.api.FeedbackConfig
-import cn.mycommons.easyfeedback.api.FeedbackDto
-import cn.mycommons.easyfeedback.api.FeedbackMetaInfo
-import cn.mycommons.easyfeedback.api.IFeedbackManager
 import cn.mycommons.easyfeedback.capture.ScreenCaptureManager
-import cn.mycommons.easyfeedback.cdn.CdnProxy
-import cn.mycommons.easyfeedback.cdn.UploadResult
+import cn.mycommons.easyfeedback.internal.api.HttpApi
 import cn.mycommons.easyfeedback.internal.plugin.TimberPlugin
+import cn.mycommons.easyfeedback.report.ReportProxy
+import cn.mycommons.easyfeedback.report.cdn.UploadResult
 import cn.mycommons.easyfeedback.shake.ShakeManager
 import cn.mycommons.easyfeedback.ui.FeedbackDialog
 import cn.mycommons.easyfeedback.util.FeedbackHandler
@@ -17,8 +15,6 @@ import cn.mycommons.easyfeedback.util.logError
 import cn.mycommons.easyfeedback.util.logInfo
 import cn.mycommons.easyfeedback.util.randomLogName
 import java.io.*
-import java.text.SimpleDateFormat
-import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
@@ -31,13 +27,14 @@ class FeedbackManagerImpl(var context: Context) : IFeedbackManager {
 
     private val executorService = Executors.newFixedThreadPool(10)
     private var feedbackConfig: FeedbackConfig? = null
+    private val httpApi: HttpApi by lazy { HttpApi(FbUtil.feedbackManager().getConfig()) }
 
     override fun init(config: FeedbackConfig) {
         this.feedbackConfig = config
 
         initCapture()
         initPlugin()
-        CdnProxy.initCdn()
+        ReportProxy.init()
     }
 
     private fun initCapture() {
@@ -67,16 +64,9 @@ class FeedbackManagerImpl(var context: Context) : IFeedbackManager {
 
     private fun doSubmit(feedbackDto: FeedbackDto) {
         logInfo("feedbackDto = %s", feedbackDto)
-        val metaInfo = FeedbackMetaInfo()
-        metaInfo.pkgName = context.packageName
-        metaInfo.platform = "Android"
-        metaInfo.time = SimpleDateFormat("yyyyMMdd HHmmss", Locale.getDefault()).format(Date())
-        val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
-        val labelRes = packageInfo.applicationInfo.labelRes
-        metaInfo.appName = context.resources.getString(labelRes)
 
+        feedbackDto.metaInfo = FeedbackMetaInfo().apply { init(context) }
         feedbackDto.extraInfo = FbUtil.feedbackCallback()?.getExtraInfo()
-        feedbackDto.metaInfo = metaInfo
 
         logInfo("feedbackDto = %s", feedbackDto)
 
@@ -91,9 +81,7 @@ class FeedbackManagerImpl(var context: Context) : IFeedbackManager {
         }
 
         val resultList = mutableListOf<Future<UploadResult>>()
-        val resultKeys = mutableListOf<String>()
-
-        files.forEach {
+        for (it in files) {
             val future = executorService.submit(Callable<UploadResult> {
                 val file = File(it)
                 var k = ""
@@ -101,21 +89,25 @@ class FeedbackManagerImpl(var context: Context) : IFeedbackManager {
                     k = randomLogName()
                     val newFile = File(context.externalCacheDir, k)
                     copyFile(file, newFile)
-                    val result = CdnProxy.upload(newFile, k)
+                    val result = ReportProxy.upload(newFile, k)
                     newFile.delete()
                     return@Callable result
                 } else {
-                    CdnProxy.upload(file, k)
+                    return@Callable ReportProxy.upload(file, k)
                 }
             })
             resultList.add(future)
         }
 
+        val resultKeys = mutableListOf<String>()
         resultList.forEach {
-            resultKeys.add(it.get()?.key ?: "")
+            resultKeys.add(it.get()?.url ?: "")
         }
 
         logInfo("resultKeys = %s", resultKeys)
+        feedbackDto.images = resultKeys
+
+        httpApi.feedback(feedbackDto)
 
         ShakeManager.restart()
     }

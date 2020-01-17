@@ -22,6 +22,7 @@ android {
                 QINIU_AK: properties.getProperty("QINIU_AK", "aa"),
                 QINIU_SK: properties.getProperty("QINIU_SK", "bb")
         ]
+        buildConfigField("String", "UPLOAD_SERVER", "\"http://192.168.237.23:8081\"")
     }
 
     buildTypes {

@@ -7,6 +7,8 @@ import cn.mycommons.easyfeedback.api.FeedbackConfig
 import cn.mycommons.easyfeedback.api.IFeedbackCallback
 import cn.mycommons.easyfeedback.example.BuildConfig
 import cn.mycommons.easyfeedback.feedback_timber.FbTimberHelper
+import java.util.*
+import kotlin.collections.HashMap
 
 /**
  * App <br/>
@@ -26,7 +28,8 @@ class App : Application() {
 
         FeedbackConfig().apply {
             debug = BuildConfig.DEBUG
-            autoClose = false
+            shakeFeedback = false
+            uploadServer = BuildConfig.UPLOAD_SERVER
 
             FeedbackHelper.init(this)
             FeedbackHelper.feedbackCallback = object : IFeedbackCallback {
@@ -43,7 +46,8 @@ class App : Application() {
                 }
 
                 override fun getExtraFile(): List<String> {
-                    return listOf(FbTimberHelper.getCurrentLogFile().absolutePath)
+                    // return listOf(FbTimberHelper.getCurrentLogFile().absolutePath)
+                    return Collections.emptyList()
                 }
             }
         }

@@ -9,7 +9,7 @@
     <uses-permission android:name="MediaStore.Images.Media.INTERNAL_CONTENT_URI" />
     <uses-permission android:name="MediaStore.Images.Media.EXTERNAL_CONTENT_URI" />
 
-    <application>
+    <application android:usesCleartextTraffic="true">
 
         <meta-data
             android:name="QINIU_AK"

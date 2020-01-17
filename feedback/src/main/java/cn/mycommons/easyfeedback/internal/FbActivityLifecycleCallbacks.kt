@@ -24,7 +24,7 @@ internal class FbActivityLifecycleCallbacks : Application.ActivityLifecycleCallb
     override fun onActivityResumed(activity: Activity) {
         currentActivity = activity
 
-        if (FbUtil.feedbackManager().getConfig().autoClose) {
+        if (FbUtil.feedbackManager().getConfig().shakeFeedback) {
             ShakeManager.start()
         }
         ScreenCaptureManager.start()
@@ -32,7 +32,7 @@ internal class FbActivityLifecycleCallbacks : Application.ActivityLifecycleCallb
 
     override fun onActivityPaused(activity: Activity) {
         currentActivity = null
-        if (FbUtil.feedbackManager().getConfig().autoClose) {
+        if (FbUtil.feedbackManager().getConfig().shakeFeedback) {
             ShakeManager.stop()
         }
 
