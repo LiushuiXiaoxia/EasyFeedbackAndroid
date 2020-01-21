@@ -16,6 +16,12 @@ import java.util.concurrent.LinkedBlockingDeque
 
 class LogDispatch {
 
+    companion object {
+        const val BATCH_SIZE = 10
+
+        const val TIME_INTERVAL = 5_000L
+    }
+
     internal var context: Context? = null
 
     private val logFile: File by lazy {
@@ -33,7 +39,7 @@ class LogDispatch {
     }
 
     private var executorService: ExecutorService = Executors.newSingleThreadExecutor()
-    private var queue: Queue<LogMsg> = LinkedBlockingDeque()
+    private var queue: LinkedBlockingDeque<LogMsg> = LinkedBlockingDeque()
     private var format = SimpleDateFormat("HH:mm:ss.sss", Locale.getDefault())
     private val logLevel: Map<Int, String> = mapOf(
             Log.VERBOSE to "VERBOSE",
@@ -46,10 +52,20 @@ class LogDispatch {
     init {
         executorService.execute {
             while (true) {
-                queue.poll()?.apply {
-                    val msg = "${format.format(Date())} ${getLevel(priority)} $tag $message"
+                val first = queue.takeFirst()
+
+                val list = LinkedList<LogMsg>()
+                queue.drainTo(list, BATCH_SIZE) // 一次性取多个
+                list.addFirst(first)
+
+                // Log.i("LogDispatch", "edf --> ${list.size}")
+                list.forEach {
+                    val msg = "${format.format(Date())} ${getLevel(it.priority)} ${it.tag} ${it.message}"
                     logWriter.println(msg)
                     logWriter.flush()
+                }
+                if (list.size <= 1) {
+                    Thread.sleep(TIME_INTERVAL)
                 }
             }
         }
