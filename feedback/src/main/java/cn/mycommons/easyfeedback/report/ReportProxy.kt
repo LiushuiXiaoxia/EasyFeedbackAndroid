@@ -1,9 +1,10 @@
 package cn.mycommons.easyfeedback.report
 
+import cn.mycommons.easyfeedback.internal.FbUtil
 import cn.mycommons.easyfeedback.report.cdn.ICdnPlatform
 import cn.mycommons.easyfeedback.report.cdn.UploadResult
 import cn.mycommons.easyfeedback.report.cdn.impl.DefaultCdnPlatform
-import cn.mycommons.easyfeedback.internal.FbUtil
+import cn.mycommons.easyfeedback.report.cdn.qiniu.QiniuCdnPlatform
 import java.io.File
 
 /**
@@ -12,14 +13,21 @@ import java.io.File
  */
 object ReportProxy {
 
-    // private val cdnPlatform: ICdnPlatform = QiniuCdn()
     private val cdnPlatform: ICdnPlatform by lazy {
         val config = FbUtil.feedbackManager().getConfig()
-        DefaultCdnPlatform(config)
+        var platform: ICdnPlatform = DefaultCdnPlatform(config)
+
+        if (config.qiniuCdn) {
+            val qiniuCdnPlatform = QiniuCdnPlatform(config)
+            if (qiniuCdnPlatform.tryInit()) {
+                platform = qiniuCdnPlatform
+            }
+        }
+        return@lazy platform
     }
 
-    fun init() {
-        cdnPlatform.init()
+    fun onCreate() {
+        cdnPlatform.onCreate()
     }
 
     fun upload(file: File, key: String = ""): UploadResult {

@@ -34,7 +34,7 @@ class FeedbackManagerImpl(var context: Context) : IFeedbackManager {
 
         initCapture()
         initPlugin()
-        ReportProxy.init()
+        ReportProxy.onCreate()
     }
 
     private fun initCapture() {

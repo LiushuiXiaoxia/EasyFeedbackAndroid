@@ -21,4 +21,9 @@ class FeedbackConfig {
      * 上传服务器
      */
     var uploadServer: String = ""
+
+    /**
+     * 是否启用七牛上传
+     */
+    var qiniuCdn: Boolean = false
 }

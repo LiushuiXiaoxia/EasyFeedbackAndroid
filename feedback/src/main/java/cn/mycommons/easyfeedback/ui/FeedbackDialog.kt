@@ -11,8 +11,6 @@ import cn.mycommons.easyfeedback.util.logInfo
 import cn.mycommons.easyfeedback.util.randomImageName
 import java.io.File
 import java.io.FileOutputStream
-import java.text.SimpleDateFormat
-import java.util.*
 
 /**
  * FeedbackDialog <br/>
@@ -55,6 +53,7 @@ class FeedbackDialog(var activity: Activity, var imageFile: File? = null) {
         } catch (e: Exception) {
             logError("genCaptureScreen fail", e)
         }
+        dView.isDrawingCacheEnabled = false
     }
 
     private fun copyImage() {

@@ -16,7 +16,9 @@ object CdnConst {
 
 interface ICdnPlatform {
 
-    fun init()
+    fun tryInit(): Boolean
+
+    fun onCreate()
 
     fun upload(file: File, key: String): UploadResult
 }

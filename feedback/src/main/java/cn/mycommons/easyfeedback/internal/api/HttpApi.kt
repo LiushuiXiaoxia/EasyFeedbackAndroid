@@ -78,4 +78,36 @@ class HttpApi(private val config: FeedbackConfig) {
 
         return ret
     }
+
+    fun getQiniuToken(pkgName: String, platform: String): String? {
+        val url = HttpUrl.parse("${config.uploadServer}/qiniu/token")!!
+                .newBuilder()
+                .addQueryParameter("pkgName", pkgName)
+                .addQueryParameter("platform", platform)
+                .build()
+
+        val request = Request.Builder()
+                .url(url)
+                .get()
+                .build()
+
+        logInfo("getQiniuToken.request = $request")
+        val response = client.newCall(request).execute()
+        logInfo("getQiniuToken.response = $response")
+
+        var ret: String? = null
+        if (response.isSuccessful) {
+            response.body()?.string()?.let {
+                logInfo("body = $it")
+                val value = object : TypeToken<BaseResp<String>>() {
+
+                }
+                val resp = gson.fromJson(it, value.type) as BaseResp<String?>?
+                logInfo("resp = $resp")
+                ret = resp?.data
+            }
+        }
+
+        return ret
+    }
 }

@@ -56,7 +56,7 @@ class SubmitActivity : AppCompatActivity() {
         ivImage.setImageBitmap(BitmapFactory.decodeFile(imagePath))
 
         if (FbUtil.feedbackManager().getConfig().debug) {
-            edtDesc.setText("呵呵呵呵")
+            edtDesc.setText("垃圾软件，毁我青春")
         }
     }
 

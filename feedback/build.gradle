@@ -34,10 +34,8 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.12.6'
     implementation 'com.google.code.gson:gson:2.8.6'
 
-    // implementation 'com.qiniu:qiniu-java-sdk:7.2.27'
-    // implementation 'com.qiniu:qiniu-android-sdk:7.5.0'
-
-    compileOnly project(':feedback-timber')
+    compileOnly 'com.qiniu:qiniu-android-sdk:7.4.3' // 可选插件
+    compileOnly project(':feedback-timber')  // 可选插件
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

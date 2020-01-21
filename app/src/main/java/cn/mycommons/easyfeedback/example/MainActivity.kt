@@ -2,6 +2,7 @@ package cn.mycommons.easyfeedback.example
 
 import android.Manifest.permission.*
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import cn.mycommons.easyfeedback.FeedbackHelper
+import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -28,6 +30,8 @@ class MainActivity : AppCompatActivity() {
             "MediaStore.Images.Media.EXTERNAL_CONTENT_URI"
     )
 
+    private val random = Random()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -41,6 +45,13 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.text).text = "Hello world\n$s"
 
         checkPermission()
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+
+        rlRoot.setBackgroundColor(Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255)))
     }
 
     private fun checkPermission() {

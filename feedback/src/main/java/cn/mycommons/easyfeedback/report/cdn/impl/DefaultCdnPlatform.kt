@@ -11,7 +11,12 @@ import java.io.File
 internal class DefaultCdnPlatform(private val config: FeedbackConfig) : ICdnPlatform {
 
     val api: HttpApi by lazy { HttpApi(config) }
-    override fun init() {
+
+    override fun tryInit(): Boolean {
+        return true
+    }
+
+    override fun onCreate() {
     }
 
     override fun upload(file: File, key: String): UploadResult {
