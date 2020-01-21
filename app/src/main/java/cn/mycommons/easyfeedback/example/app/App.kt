@@ -1,20 +1,19 @@
 package cn.mycommons.easyfeedback.example.app
 
-import android.app.Application
 import android.content.Context
+import androidx.multidex.MultiDexApplication
 import cn.mycommons.easyfeedback.FeedbackHelper
 import cn.mycommons.easyfeedback.api.FeedbackConfig
 import cn.mycommons.easyfeedback.api.IFeedbackCallback
 import cn.mycommons.easyfeedback.example.BuildConfig
 import java.util.*
-import kotlin.collections.HashMap
 
 /**
  * App <br/>
  * Created by xiaqiulei on 2020-01-11.
  */
 
-class App : Application() {
+class App : MultiDexApplication() {
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
@@ -35,7 +34,7 @@ class App : Application() {
             FeedbackHelper.feedbackCallback = object : IFeedbackCallback {
 
                 override fun getExtraInfo(): Map<String, Any?>? {
-                    val map = HashMap<String, Any?>()
+                    val map = linkedMapOf<String, Any?>()
                     map["package"] = packageName
                     map["platform"] = "Android"
                     map["versionName"] = BuildConfig.VERSION_NAME

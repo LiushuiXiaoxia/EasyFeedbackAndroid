@@ -2,7 +2,6 @@ package cn.mycommons.easyfeedback.ui
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -11,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import cn.mycommons.easyfeedback.R
 import cn.mycommons.easyfeedback.util.logInfo
+import com.bumptech.glide.Glide
 
 
 class EditImageActivity : AppCompatActivity() {
@@ -46,7 +46,8 @@ class EditImageActivity : AppCompatActivity() {
 
         logInfo("imagePath = $imagePath")
         ivImage = findViewById(R.id.ivImage)
-        ivImage.setImageBitmap(BitmapFactory.decodeFile(imagePath))
+
+        Glide.with(this).load(imagePath).into(ivImage)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -2,7 +2,6 @@ package cn.mycommons.easyfeedback.ui
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -13,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import cn.mycommons.easyfeedback.R
 import cn.mycommons.easyfeedback.api.FeedbackDto
 import cn.mycommons.easyfeedback.internal.FbUtil
+import com.bumptech.glide.Glide
 
 class SubmitActivity : AppCompatActivity() {
 
@@ -53,11 +53,12 @@ class SubmitActivity : AppCompatActivity() {
         edtDesc = findViewById(R.id.edtDesc)
         ivImage = findViewById(R.id.ivImage)
 
-        ivImage.setImageBitmap(BitmapFactory.decodeFile(imagePath))
-
         if (FbUtil.feedbackManager().getConfig().debug) {
+            edtContact.setText("10086")
             edtDesc.setText("垃圾软件，毁我青春")
         }
+
+        Glide.with(this).load(imagePath).into(ivImage)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

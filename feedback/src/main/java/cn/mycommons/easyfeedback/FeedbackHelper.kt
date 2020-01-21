@@ -12,6 +12,9 @@ import cn.mycommons.easyfeedback.internal.FeedbackShakeCallback
 import cn.mycommons.easyfeedback.shake.ShakeManager
 import cn.mycommons.easyfeedback.ui.FeedbackDialog
 import cn.mycommons.easyfeedback.util.logInfo
+import com.bumptech.glide.Glide
+import com.guoxiaoxing.phoenix.picker.Phoenix
+
 
 /**
  * FeedbackHelper <br></br>
@@ -35,7 +38,14 @@ object FeedbackHelper {
 
         logInfo("FeedbackHelper.init")
 
+        initPhoenix()
         start()
+    }
+
+    private fun initPhoenix() {
+        Phoenix.config().imageLoader { mContext, imageView, imagePath, _ ->
+            Glide.with(mContext).load(imagePath).into(imageView)
+        }
     }
 
     /**
@@ -44,8 +54,7 @@ object FeedbackHelper {
     fun start() {
         val application = context.applicationContext as Application
         application.registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
-        ShakeManager.onShakeCallback =
-            FeedbackShakeCallback()
+        ShakeManager.onShakeCallback = FeedbackShakeCallback()
     }
 
 
