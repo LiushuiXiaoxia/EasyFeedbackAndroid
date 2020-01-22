@@ -1,10 +1,10 @@
-package cn.mycommons.easyfeedback.report
+package cn.mycommons.easyfeedback.internal.report
 
 import cn.mycommons.easyfeedback.internal.FbUtil
-import cn.mycommons.easyfeedback.report.cdn.ICdnPlatform
-import cn.mycommons.easyfeedback.report.cdn.UploadResult
-import cn.mycommons.easyfeedback.report.cdn.impl.DefaultCdnPlatform
-import cn.mycommons.easyfeedback.report.cdn.qiniu.QiniuCdnPlatform
+import cn.mycommons.easyfeedback.internal.report.cdn.ICdnPlatform
+import cn.mycommons.easyfeedback.internal.report.cdn.UploadResult
+import cn.mycommons.easyfeedback.internal.report.cdn.impl.DefaultCdnPlatform
+import cn.mycommons.easyfeedback.internal.report.cdn.qiniu.QiniuCdnPlatform
 import java.io.File
 
 /**

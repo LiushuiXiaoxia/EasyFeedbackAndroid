@@ -11,7 +11,7 @@ import java.util.*
 
 fun randomLogName(): String {
     val s = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss.sss", Locale.getDefault()).format(Date())
-    return "feedback_${s}_${FbUtil.context().packageName}_timber.log.txt"
+    return "feedback_${s}_${FbUtil.context().packageName}_timber.log"
 }
 
 fun randomImageName(): String {

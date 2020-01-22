@@ -6,7 +6,6 @@ import cn.mycommons.easyfeedback.FeedbackHelper
 import cn.mycommons.easyfeedback.api.FeedbackConfig
 import cn.mycommons.easyfeedback.api.IFeedbackCallback
 import cn.mycommons.easyfeedback.example.BuildConfig
-import java.util.*
 
 /**
  * App <br/>
@@ -42,11 +41,6 @@ class App : MultiDexApplication() {
 
                     map["user_id"] = System.currentTimeMillis()
                     return map
-                }
-
-                override fun getExtraFile(): List<String> {
-                    // return listOf(FbTimberHelper.getCurrentLogFile().absolutePath)
-                    return Collections.emptyList()
                 }
             }
         }

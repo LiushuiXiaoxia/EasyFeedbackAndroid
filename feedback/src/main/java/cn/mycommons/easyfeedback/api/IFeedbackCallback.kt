@@ -1,5 +1,7 @@
 package cn.mycommons.easyfeedback.api
 
+import java.util.*
+
 /**
  * IFeedbackCallback <br/>
  * Created by xiaqiulei on 2020-01-11.
@@ -15,5 +17,5 @@ interface IFeedbackCallback {
     /**
      * 需要一起上传的文件，如日志文件等
      */
-    fun getExtraFile(): List<String>
+    fun getExtraFile(): List<String> = Collections.emptyList()
 }

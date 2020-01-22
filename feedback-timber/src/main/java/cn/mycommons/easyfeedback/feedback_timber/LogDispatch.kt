@@ -8,13 +8,15 @@ import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.LinkedBlockingDeque
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 
 /**
  * LoggerDispatch <br/>
  * Created by xiaqiulei on 2020-01-12.
  */
 
-class LogDispatch {
+class LogDispatch(val context: Context) {
 
     companion object {
         const val BATCH_SIZE = 10
@@ -22,24 +24,8 @@ class LogDispatch {
         const val TIME_INTERVAL = 5_000L
     }
 
-    internal var context: Context? = null
-
-    private val logFile: File by lazy {
-        val parent = File(context!!.externalCacheDir, "log")
-        if (!parent.exists()) {
-            parent.mkdir()
-        }
-        val format = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
-        File(parent, "${format.format(Date())}_timber.log.txt")
-    }
-
-    private val logWriter: PrintWriter by lazy {
-        val stream = FileOutputStream(logFile, true)
-        PrintWriter(BufferedWriter(OutputStreamWriter(stream)))
-    }
-
-    private var executorService: ExecutorService = Executors.newSingleThreadExecutor()
     private var queue: LinkedBlockingDeque<LogMsg> = LinkedBlockingDeque()
+    private var executorService: ExecutorService = Executors.newSingleThreadExecutor()
     private var format = SimpleDateFormat("HH:mm:ss.sss", Locale.getDefault())
     private val logLevel: Map<Int, String> = mapOf(
             Log.VERBOSE to "VERBOSE",
@@ -48,6 +34,9 @@ class LogDispatch {
             Log.WARN to "WARN",
             Log.ERROR to "ERROR"
     )
+
+    private lateinit var logFile: File
+    private lateinit var logWriter: PrintWriter
 
     init {
         executorService.execute {
@@ -69,6 +58,21 @@ class LogDispatch {
                 }
             }
         }
+
+        initFile(true)
+    }
+
+    private fun initFile(removeZip: Boolean) {
+        val parent = logDir()
+        val format = SimpleDateFormat("yyyyMMdd.HHmmss.SSS", Locale.getDefault())
+        logFile = File(parent, "${context.packageName}_${format.format(Date())}_timber.log")
+        logWriter = PrintWriter(BufferedWriter(OutputStreamWriter(FileOutputStream(logFile, true))))
+
+        if (removeZip) {
+            zipDir().listFiles()?.forEach {
+                it.deleteOnExit()
+            }
+        }
     }
 
     fun dispatch(priority: Int, tag: String?, message: String, t: Throwable?) {
@@ -82,7 +86,55 @@ class LogDispatch {
         return logLevel[priority] ?: "Unknown"
     }
 
-    internal fun getCurrentLogFile() = logFile
+    internal fun archivingFile(): File {
+        val oldFile = logFile
+        val oldLogWriter = logWriter
 
-    internal fun getLogDir(): File? = logFile.parentFile
+        initFile(false) // 重新生成
+
+        oldLogWriter.flush()
+        oldLogWriter.close()
+
+        val gzParent = zipDir()
+        val gzFile = File(gzParent, oldFile.name.replace("_timber.log", ".gz"))
+        val zos = ZipOutputStream(FileOutputStream(gzFile))
+
+        logDir().listFiles()?.forEach {
+            if (!it.isDirectory) {
+                val entry = ZipEntry(it.name)
+                zos.putNextEntry(entry)
+                copyIntoZip(zos, FileInputStream(it))
+                // 不是当前文件则删除
+                if (it.name != logFile.name) {
+                    it.deleteOnExit()
+                }
+            }
+        }
+        zos.close()
+
+        return gzFile
+    }
+
+    private fun zipDir(): File {
+        return File(context.externalCacheDir, "zip").apply { mkdir() }
+    }
+
+    private fun logDir(): File {
+        return File(context.externalCacheDir, "log").apply { mkdir() }
+    }
+
+    private fun copyIntoZip(output: OutputStream, input: InputStream) {
+        try {
+            val buf = ByteArray(1024)
+            var len = input.read(buf)
+            while (len != -1) {
+                output.write(buf, 0, len)
+                len = input.read(buf)
+            }
+            output.flush()
+        } catch (t: Throwable) {
+        } finally {
+            input.close()
+        }
+    }
 }

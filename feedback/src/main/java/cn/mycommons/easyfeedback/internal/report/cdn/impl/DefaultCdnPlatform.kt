@@ -1,10 +1,10 @@
-package cn.mycommons.easyfeedback.report.cdn.impl
+package cn.mycommons.easyfeedback.internal.report.cdn.impl
 
 import cn.mycommons.easyfeedback.api.FeedbackConfig
 import cn.mycommons.easyfeedback.internal.api.HttpApi
-import cn.mycommons.easyfeedback.report.cdn.CdnConst
-import cn.mycommons.easyfeedback.report.cdn.ICdnPlatform
-import cn.mycommons.easyfeedback.report.cdn.UploadResult
+import cn.mycommons.easyfeedback.internal.report.cdn.CdnConst
+import cn.mycommons.easyfeedback.internal.report.cdn.ICdnPlatform
+import cn.mycommons.easyfeedback.internal.report.cdn.UploadResult
 import cn.mycommons.easyfeedback.util.logInfo
 import java.io.File
 

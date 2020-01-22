@@ -2,6 +2,7 @@ package cn.mycommons.easyfeedback.internal.api
 
 import cn.mycommons.easyfeedback.api.FeedbackConfig
 import cn.mycommons.easyfeedback.api.FeedbackDto
+import cn.mycommons.easyfeedback.internal.api.model.UploadFileData
 import cn.mycommons.easyfeedback.util.logInfo
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

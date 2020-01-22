@@ -10,18 +10,22 @@ import cn.mycommons.easyfeedback.util.logError
 
 abstract class BasePlugin(val name: String) {
 
+    var enable = false
+        private set
+
     fun tryInit() {
         try {
-            plugin().javaClass
+            pluginClass().name
             logDebug("FbPlugin $name begin init")
-            onInit()
+            doInit()
+            enable = true
             logDebug("FbPlugin $name end init")
         } catch (t: Throwable) {
             logError("FbPlugin do not has plugin $name")
         }
     }
 
-    abstract fun plugin(): Class<*>
+    internal abstract fun pluginClass(): Class<*>
 
-    abstract fun onInit()
+    internal abstract fun doInit()
 }

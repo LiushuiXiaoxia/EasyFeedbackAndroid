@@ -1,11 +1,11 @@
-package cn.mycommons.easyfeedback.report.cdn.qiniu
+package cn.mycommons.easyfeedback.internal.report.cdn.qiniu
 
 import cn.mycommons.easyfeedback.api.FeedbackConfig
 import cn.mycommons.easyfeedback.internal.FbUtil
 import cn.mycommons.easyfeedback.internal.api.HttpApi
-import cn.mycommons.easyfeedback.report.cdn.CdnConst.DEFAULT_CDN
-import cn.mycommons.easyfeedback.report.cdn.ICdnPlatform
-import cn.mycommons.easyfeedback.report.cdn.UploadResult
+import cn.mycommons.easyfeedback.internal.report.cdn.CdnConst.DEFAULT_CDN
+import cn.mycommons.easyfeedback.internal.report.cdn.ICdnPlatform
+import cn.mycommons.easyfeedback.internal.report.cdn.UploadResult
 import com.qiniu.android.collect.Config
 import com.qiniu.android.common.FixedZone
 import com.qiniu.android.storage.Configuration

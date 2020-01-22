@@ -18,6 +18,9 @@ class FeedbackDto {
     @SerializedName("images")
     var images: List<String>? = null
 
+    @SerializedName("files")
+    var files: List<String>? = null
+
     @SerializedName("meta")
     var metaInfo: FeedbackMetaInfo? = null
 

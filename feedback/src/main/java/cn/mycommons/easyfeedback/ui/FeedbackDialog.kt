@@ -42,7 +42,8 @@ class FeedbackDialog(var activity: Activity, var imageFile: File? = null) {
         val bitmap: Bitmap = Bitmap.createBitmap(dView.drawingCache)
         try {
             // 图片文件路径
-            imageFile = File(activity.externalCacheDir, randomImageName())
+            val parent = File(activity.externalCacheDir, "capture").apply { mkdirs() }
+            imageFile = File(parent, randomImageName())
 
             logInfo("genCaptureScreen.file = %s", imageFile)
 

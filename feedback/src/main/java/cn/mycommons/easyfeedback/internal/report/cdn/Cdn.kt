@@ -1,4 +1,4 @@
-package cn.mycommons.easyfeedback.report.cdn
+package cn.mycommons.easyfeedback.internal.report.cdn
 
 import java.io.File
 

@@ -1,4 +1,4 @@
-package cn.mycommons.easyfeedback.report.cdn.qiniu
+package cn.mycommons.easyfeedback.internal.report.cdn.qiniu
 
 import cn.mycommons.easyfeedback.util.logE
 import com.qiniu.android.storage.Configuration

@@ -2,6 +2,7 @@ package cn.mycommons.easyfeedback.feedback_timber
 
 import android.content.Context
 import timber.log.Timber
+import java.io.File
 
 /**
  * FbTimberHelper <br/>
@@ -10,10 +11,10 @@ import timber.log.Timber
 
 object FbTimberHelper {
 
-    private val logDispatch: LogDispatch = LogDispatch()
+    private lateinit var logDispatch: LogDispatch
 
     fun init(context: Context) {
-        logDispatch.context = context
+        logDispatch = LogDispatch(context)
         Timber.plant(object : Timber.DebugTree() {
 
             override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
@@ -24,7 +25,8 @@ object FbTimberHelper {
         })
     }
 
-    fun getCurrentLogFile() = logDispatch.getCurrentLogFile()
-
-    fun getLogDir() = logDispatch.getLogDir()
+    /**
+     * 归档文件
+     */
+    fun archivingFile(): File = logDispatch.archivingFile()
 }

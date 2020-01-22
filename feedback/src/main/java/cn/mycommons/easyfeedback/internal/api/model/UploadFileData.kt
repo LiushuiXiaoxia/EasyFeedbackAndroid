@@ -1,4 +1,4 @@
-package cn.mycommons.easyfeedback.internal.api
+package cn.mycommons.easyfeedback.internal.api.model
 
 class UploadFileData {
     val fileName: String? = null
